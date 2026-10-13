@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITSwap Prototypes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Brush+Script+MT&display=swap');
+
+    :root {
+      --bg-dark: #0b1120;
+      --bg-card: #1e293b;
+      --bg-hover: #334155;
+      --primary-green: #10b981;
+      --primary-green-hover: #059669;
+      --accent-orange: #f59e0b;
+      --accent-red: #ef4444;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .animate-fade {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .animate-slide {
+      animation: slideIn 0.3s ease-out forwards;
+    }
+
+    header.main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-dark);
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-light);
+      background-color: var(--bg-hover);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: var(--bg-hover);
+      padding: 6px 12px;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .user-profile:hover {
+      background-color: #475569;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.8rem;
+    }
+
+    .user-info span:first-child {
+      font-weight: 600;
+    }
+
+    .user-info span:last-child {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+    }
+
+    .tab-container {
+      display: flex;
+      gap: 8px;
+      padding: 16px 24px;
+      background-color: var(--bg-dark);
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background-color: transparent;
+      color: var(--text-muted);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--bg-card);
+      color: var(--text-light);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary-green);
+      color: var(--bg-dark);
+      border-color: var(--primary-green);
+      font-weight: 600;
+    }
+
+    .screen {
+      display: none;
+      padding: 24px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .sidebar-card {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      height: fit-content;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .sidebar-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .stats-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-weight: 600;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kanban-column {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .kanban-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .kanban-count {
+      background-color: var(--bg-hover);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .trade-card {
+      background-color: var(--bg-dark);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trade-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-green);
+    }
+
+    .trade-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--primary-green);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .trade-partner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .trade-partner img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .trade-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .trade-info span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trade-info strong {
+      color: var(--text-light);
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      border: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: var(--bg-dark);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .btn-danger {
+      background-color: var(--accent-red);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-warning {
+      background-color: var(--accent-orange);
+      color: var(--bg-dark);
+    }
+
+    .btn-warning:hover {
+      background-color: #d97706;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+    }
+
+    .table-container {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--bg-hover);
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: rgba(51, 65, 85, 0.5);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background-color: rgba(16, 185, 129, 0.2); color: var(--primary-green); }
+    .badge-orange { background-color: rgba(245, 158, 11, 0.2); color: var(--accent-orange); }
+    .badge-red { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+    .badge-blue { background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+
+    .banner {
+      background-color: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--accent-orange);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .banner-icon {
+      color: var(--accent-orange);
+      font-size: 1.25rem;
+    }
+
+    .banner-text h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .banner-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .banner-checklist {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+
+    .banner-checklist span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary-green);
+    }
+
+    .mobile-mockup {
+      width: 320px;
+      height: 650px;
+      background-color: #000;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: var(--shadow-lg), inset 0 0 10px rgba(255,255,255,0.1);
+      position: relative;
+      margin: 0 auto;
+      border: 2px solid #333;
+    }
+
+    .mobile-screen {
+      background-color: var(--bg-dark);
+      border-radius: 30px;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 16px;
+    }
+
+    .mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .mobile-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .mobile-step {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .totp-code {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-align: center;
+      color: var(--primary-green);
+      margin: 20px 0;
+      animation: pulse 2s infinite;
+    }
+
+    .mobile-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--primary-green);
+      color: var(--bg-dark);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    .mobile-btn:hover {
+      background-color: var(--primary-green-hover);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background-color: var(--bg-card);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-green);
+    }
+
+    .signature-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Brush Script MT', cursive;
+      font-size: 2rem;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .signature-label {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .item-card {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .item-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background-color: #0f172a;
+    }
+
+    .item-details {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .item-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .item-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+    }
+
+    .item-footer .btn {
+      flex: 1;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background-color: var(--border-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      background-color: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 16px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--primary-green);
+      border: 2px solid var(--bg-dark);
+    }
+
+    .timeline-item.counter::before {
+      background-color: var(--accent-orange);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal-content {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .evaluation-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .evaluation-row:last-child {
+      border-bottom: none;
+    }
+
+    .evaluation-label {
+      flex: 1;
+      font-size: 0.85rem;
+      padding-right: 16px;
+    }
+
+    .evaluation-scale {
+      display: flex;
+      gap: 8px;
+    }
+
+    .evaluation-scale input[type="radio"] {
+      display: none;
+    }
+
+    .evaluation-scale label {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .evaluation-scale label:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .evaluation-scale input[type="radio"]:checked + label {
+      background-color: var(--primary-green);
+      color: var(--bg-dark);
+      border-color: var(--primary-green);
+    }
+
+    .appeal-thread {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .appeal-message {
+      display: flex;
+      gap: 12px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .appeal-message.admin {
+      flex-direction: row-reverse;
+    }
+
+    .appeal-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .appeal-bubble {
+      background-color: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      max-width: 80%;
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    .appeal-message.admin .appeal-bubble {
+      background-color: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .appeal-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
+    .w-full { width: 100%; }
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 16px; }
+    .mb-4 { margin-bottom: 16px; }
+    .text-sm { font-size: 0.85rem; }
+    .text-muted { color: var(--text-muted); }
+    .font-bold { font-weight: 700; }
+    .text-green { color: var(--primary-green); }
+    .text-orange { color: var(--accent-orange); }
+    .text-red { color: var(--accent-red); }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
+      ITSwap
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link">Browse</a>
+      <a class="nav-link active">My Trades</a>
+      <a class="nav-link">Listings</a>
+      <a class="nav-link">Messages <i class="fa-solid fa-lock" style="font-size: 0.7rem; margin-left: 4px; color: var(--text-muted);"></i></a>
+    </nav>
+    <div class="user-profile">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" class="user-avatar">
+      <div class="user-info">
+        <span>Juan Dela Cruz</span>
+        <span>Role: Student · BSIT-3</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="tab-container">
+    <button class="tab-btn active" data-target="screen-dashboard">Dashboard (Trades)</button>
+    <button class="tab-btn" data-target="screen-listings">My Listings</button>
+    <button class="tab-btn" data-target="screen-admin">Admin Panel</button>
+    <button class="tab-btn" data-target="screen-mobile">Offline Handoff</button>
+    <button class="tab-btn" data-target="screen-browse">Browse & Propose</button>
+    <button class="tab-btn" data-target="screen-create">List New Item</button>
+    <button class="tab-btn" data-target="screen-schedule">Schedule & Chat</button>
+    <button class="tab-btn" data-target="screen-register">Registration</button>
+    <button class="tab-btn" data-target="screen-dispute">Dispute Resolution</button>
+    <button class="tab-btn" data-target="screen-history">History & Archive</button>
+    <button class="tab-btn" data-target="screen-evaluation">Evaluation</button>
+    <button class="tab-btn" data-target="screen-appeal">Appeal Thread</button>
+  </div>
+
+  <main>
+    <section id="screen-dashboard" class="screen active">
+      <div class="layout-grid">
+        <div class="sidebar-card animate-slide">
+          <div class="sidebar-header">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" class="sidebar-avatar">
+            <div>
+              <div class="sidebar-title">JUAN DELA CRUZ</div>
+              <div class="sidebar-subtitle"><i class="fa-solid fa-check-circle text-green"></i> Verified IT Student</div>
+              <div class="sidebar-subtitle">BSIT-3</div>
+            </div>
+          </div>
+          <div class="stats-list">
+            <div class="stat-item"><span class="stat-label">Completed Trades:</span><span class="stat-value">7</span></div>
+            <div class="stat-item"><span class="stat-label">Cancellations:</span><span class="stat-value">1</span></div>
+            <div class="stat-item"><span class="stat-label">No-Shows:</span><span class="stat-value">0</span></div>
+            <div class="stat-item"><span class="stat-label">Moderation Actions:</span><span class="stat-value">0</span></div>
+            <div class="stat-item"><span class="stat-label">Member Since:</span><span class="stat-value">Aug 2024</span></div>
+          </div>
+        </div>
+
+        <div class="main-content animate-fade">
+          <div class="flex-row" style="justify-content: space-between; align-items: center;">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em;">My Trades Pipeline</h2>
+            <span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size: 0.5rem; margin-right: 4px;"></i> Sync Active</span>
+          </div>
+          
+          <div class="kanban-board">
+            <div class="kanban-column">
+              <div class="kanban-header">Proposed <span class="kanban-count">0</span></div>
+              <div class="text-muted text-sm text-center" style="margin-top: 40px;">No active proposals</div>
+            </div>
+            <div class="kanban-column">
+              <div class="kanban-header">Accepted <span class="kanban-count">0</span></div>
+            </div>
+            <div class="kanban-column" style="border-color: var(--primary-green);">
+              <div class="kanban-header">Scheduled <span class="kanban-count">1</span></div>
+              <div class="trade-card animate-fade">
+                <div class="trade-title">Trade #T-198</div>
+                <div class="trade-partner">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Alex">
+                  <span>Alex R.</span>
+                </div>
+                <div class="trade-info">
+                  <span><i class="fa-solid fa-arrow-right"></i> Give: <strong>Corsair Vengeance 16GB DDR4</strong></span>
+                  <span><i class="fa-solid fa-arrow-left"></i> Get: <strong>Samsung 1TB SSD</strong></span>
+                </div>
+                <div class="trade-info" style="margin-top: 4px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+                  <span><i class="fa-solid fa-map-marker-alt"></i> Library - 2nd Floor Lobby</span>
+                  <span><i class="fa-solid fa-calendar"></i> Today, 2:00 PM <span class="badge badge-orange" style="margin-left: 8px;"><i class="fa-solid fa-clock"></i> 2h to meetup</span></span>
+                </div>
+                <button class="btn btn-outline w-full mt-4">View Manifest</button>
+              </div>
+            </div>
+            <div class="kanban-column">
+              <div class="kanban-header">Finalized <span class="kanban-count">0</span></div>
+            </div>
+          </div>
+
+          <div class="banner">
+            <div class="banner-content">
+              <div class="banner-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="banner-text">
+                <h4>PREPARE FOR OFFLINE HANDOFF</h4>
+                <p>Load the condition manifest & trade secret while you have signal before heading to the campus meetup.</p>
+                <div class="banner-checklist">
+                  <span><i class="fa-solid fa-check-circle"></i> Manifest cached</span>
+                  <span><i class="fa-solid fa-check-circle"></i> Trade secret loaded</span>
+                  <span><i class="fa-solid fa-check-circle"></i> TOTP Ready</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary">I'm Ready</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-listings" class="screen">
+      <div class="layout-grid">
+        <div class="sidebar-card">
+          <div class="sidebar-header">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" class="sidebar-avatar">
+            <div>
+              <div class="sidebar-title">JUAN DELA CRUZ</div>
+              <div class="sidebar-subtitle"><i class="fa-solid fa-check-circle text-green"></i> Verified IT Student</div>
+              <div class="sidebar-subtitle">BSIT-3</div>
+            </div>
+          </div>
+          <div class="stats-list">
+            <div class="stat-item"><span class="stat-label">Completed Trades:</span><span class="stat-value">7</span></div>
+            <div class="stat-item"><span class="stat-label">Cancellations:</span><span class="stat-value">1</span></div>
+            <div class="stat-item"><span class="stat-label">No-Shows:</span><span class="stat-value">0</span></div>
+            <div class="stat-item"><span class="stat-label">Active Listings:</span><span class="stat-value">3</span></div>
+            <div class="stat-item"><span class="stat-label">Member Since:</span><span class="stat-value">Aug 2024</span></div>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="flex-row" style="justify-content: space-between; align-items: center;">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase;">My Listings</h2>
+            <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> List New Item</button>
+          </div>
+
+          <div class="flex-row" style="gap: 8px;">
+            <button class="btn btn-outline active">All (44)</button>
+            <button class="btn btn-outline">Active (28)</button>
+            <button class="btn btn-outline">Traded (12)</button>
+            <button class="btn btn-outline">Removed (4)</button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Condition</th>
+                  <th>Proposals</th>
+                  <th>Date Listed</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="flex-row" style="align-items: center; gap: 12px;">
+                    <img src="https://images.unsplash.com/photo-1541029071515-84cc54f84dc5?auto=format&fit=crop&w=150&q=80" alt="RAM" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                    <span class="font-bold">Corsair Vengeance 16GB DDR4</span>
+                  </td>
+                  <td>Storage & Memory</td>
+                  <td><span class="badge badge-green">Good</span></td>
+                  <td><span class="badge badge-orange">3 Proposals</span></td>
+                  <td>Aug 12 2026</td>
+                  <td><button class="btn btn-outline btn-sm">...</button></td>
+                </tr>
+                <tr>
+                  <td class="flex-row" style="align-items: center; gap: 12px;">
+                    <img src="https://images.unsplash.com/photo-1615663245857-ac93bb5d6d20?auto=format&fit=crop&w=150&q=80" alt="Mouse" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                    <span class="font-bold">Logitech G502 Hero</span>
+                  </td>
+                  <td>Peripherals & Audio</td>
+                  <td><span class="badge badge-green">Like New</span></td>
+                  <td><span class="badge badge-blue">0 Proposals</span></td>
+                  <td>Aug 10 2026</td>
+                  <td><button class="btn btn-outline btn-sm">...</button></td>
+                </tr>
+                <tr>
+                  <td class="flex-row" style="align-items: center; gap: 12px;">
+                    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=150&q=80" alt="GPU" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                    <span class="font-bold">GTX 1050 Ti</span>
+                  </td>
+                  <td>PC Components</td>
+                  <td><span class="badge badge-orange">Fair</span></td>
+                  <td><span class="badge badge-orange">1 Proposal</span></td>
+                  <td>Aug 05 2026</td>
+                  <td><button class="btn btn-outline btn-sm">...</button></td>
+                </tr>
+                <tr>
+                  <td class="flex-row" style="align-items: center; gap: 12px;">
+                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=150&q=80" alt="SSD" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                    <span class="font-bold">Samsung 1TB SSD</span>
+                  </td>
+                  <td>Storage & Memory</td>
+                  <td><span class="badge badge-green">Good</span></td>
+                  <td><span class="badge badge-blue">0 Proposals</span></td>
+                  <td>Jul 28 2026</td>
+                  <td><button class="btn btn-outline btn-sm">...</button></td>
+                </tr>
+                <tr>
+                  <td class="flex-row" style="align-items: center; gap: 12px;">
+                    <img src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=150&q=80" alt="Keyboard" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                    <span class="font-bold">Keychron K2</span>
+                  </td>
+                  <td>Peripherals & Audio</td>
+                  <td><span class="badge badge-green">Like New</span></td>
+                  <td><span class="badge badge-blue">0 Proposals</span></td>
+                  <td>Jul 15 2026</td>
+                  <td><button class="btn btn-outline btn-sm">...</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-admin" class="screen">
+      <div class="layout-grid">
+        <div class="sidebar-card">
+          <div class="sidebar-header">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" alt="Admin Maria" class="sidebar-avatar">
+            <div>
+              <div class="sidebar-title">ADMIN MARIA</div>
+              <div class="sidebar-subtitle">Campus Moderator</div>
+            </div>
+          </div>
+          <div class="stats-list">
+            <div class="stat-item"><span class="stat-label">Open Disputes:</span><span class="stat-value text-orange">14</span></div>
+            <div class="stat-item"><span class="stat-label">Pending Verifications:</span><span class="stat-value text-green">5</span></div>
+            <div class="stat-item"><span class="stat-label">Flagged Listings:</span><span class="stat-value text-red">2</span></div>
+            <div class="stat-item"><span class="stat-label">Resolved This Month:</span><span class="stat-value">42</span></div>
+          </div>
+        </div>
+
+        <div class="main-content flex-col">
+          <h2 style="font-size: 1.1rem; text-transform: uppercase;">Admin Dashboard</h2>
+          
+          <div class="grid-cards">
+            <div class="item-card">
+              <div class="item-details">
+                <div class="item-title text-orange">Trade #T-198 - No-show Report</div>
+                <div class="text-sm text-muted">Reported by Juan D. · 1d ago</div>
+                <div class="text-sm">Meetup: Library · 2:00 PM</div>
+                <button class="btn btn-outline w-full mt-4">Review Dispute</button>
+              </div>
+            </div>
+            <div class="item-card">
+              <div class="item-details">
+                <div class="item-title text-red">Trade #T-185 - Policy Violation</div>
+                <div class="text-sm text-muted">Reported by System Flag · 2d ago</div>
+                <div class="text-sm">Item category mismatch</div>
+                <button class="btn btn-outline w-full mt-4">Review Dispute</button>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 0.95rem; margin-top: 16px;">ID VERIFICATIONS (5)</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Program</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Maria Santos</td>
+                  <td>BSIT-2</td>
+                  <td class="flex-row" style="gap: 8px;">
+                    <button class="btn btn-primary btn-sm">Approve</button>
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kevin Lee</td>
+                  <td>BSIT-3</td>
+                  <td class="flex-row" style="gap: 8px;">
+                    <button class="btn btn-primary btn-sm">Approve</button>
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ana Cruz</td>
+                  <td>BSIT-1</td>
+                  <td class="flex-row" style="gap: 8px;">
+                    <button class="btn btn-primary btn-sm">Approve</button>
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="font-size: 0.95rem; margin-top: 16px;">FLAGGED LISTINGS (2)</h3>
+          <div class="flex-row">
+            <div class="item-card flex-1">
+              <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=150&q=80" alt="CPU" class="item-image">
+              <div class="item-details">
+                <div class="item-title">Intel i7-9700K</div>
+                <div class="text-sm text-red">Flagged: Category violation</div>
+                <div class="flex-row mt-4" style="gap: 8px;">
+                  <button class="btn btn-danger btn-sm flex-1">Remove</button>
+                  <button class="btn btn-outline btn-sm flex-1">Dismiss</button>
+                </div>
+              </div>
+            </div>
+            <div class="item-card flex-1">
+              <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=150&q=80" alt="Monitor" class="item-image">
+              <div class="item-details">
+                <div class="item-title">ASUS 24 inch</div>
+                <div class="text-sm text-red">Flagged: Missing media</div>
+                <div class="flex-row mt-4" style="gap: 8px;">
+                  <button class="btn btn-danger btn-sm flex-1">Remove</button>
+                  <button class="btn btn-outline btn-sm flex-1">Dismiss</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-mobile" class="screen">
+      <h2 style="font-size: 1.1rem; text-transform: uppercase; text-align: center; margin-bottom: 24px;">Mobile Offline Handoff Flow</h2>
+      <div class="flex-row" style="justify-content: center; gap: 24px; flex-wrap: wrap;">
+        <div class="mobile-mockup">
+          <div class="mobile-screen">
+            <div class="mobile-header">
+              <span>mobile.wap.com</span>
+              <span><i class="fa-solid fa-battery-full"></i></span>
+            </div>
+            <div class="badge badge-orange" style="align-self: center; margin-bottom: 16px;"><i class="fa-solid fa-wifi"></i> Offline Mode</div>
+            <div class="mobile-title">Verify Presence</div>
+            <div class="mobile-step">Step 1 of 4</div>
+            <p class="text-sm text-center text-muted mb-4">Show this code to your trade partner:</p>
+            <div class="totp-code">4 8 2 9 1 6</div>
+            <p class="text-center text-muted text-sm mb-4"><i class="fa-regular fa-clock"></i> 0:24</p>
+            <p class="text-sm text-center text-muted mb-4">Or enter the code they show you:</p>
+            <div class="flex-row" style="justify-content: center; gap: 8px; margin-bottom: 24px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+              <input type="text" maxlength="1" style="width: 32px; height: 40px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 4px;">
+            </div>
+            <button class="mobile-btn">[ Verify ]</button>
+          </div>
+        </div>
+
+        <div class="mobile-mockup">
+          <div class="mobile-screen">
+            <div class="mobile-header">
+              <span>mobile.wap.com</span>
+              <span><i class="fa-solid fa-battery-full"></i></span>
+            </div>
+            <div class="badge badge-orange" style="align-self: center; margin-bottom: 16px;"><i class="fa-solid fa-wifi"></i> Offline Mode</div>
+            <div class="mobile-title">Condition Checklist</div>
+            <div class="mobile-step">Step 2 of 4</div>
+            <div class="checklist-item">
+              <input type="checkbox" checked>
+              <span>Item matches listing photos</span>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" checked>
+              <span>Condition matches declared grade</span>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" checked>
+              <span>All included accessories present</span>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" checked>
+              <span>No undisclosed damage observed</span>
+            </div>
+            <div style="margin-top: 16px;">
+              <p class="text-sm text-muted mb-4">Notes / Discrepancies (Optional)</p>
+              <textarea placeholder="Write notes here..." style="width: 100%; height: 80px; background: var(--bg-card); border: 1px solid var(--border-color); color: white; border-radius: 8px; padding: 8px; resize: none;"></textarea>
+            </div>
+            <button class="mobile-btn mt-4">[ Continue ]</button>
+          </div>
+        </div>
+
+        <div class="mobile-mockup">
+          <div class="mobile-screen">
+            <div class="mobile-header">
+              <span>mobile.wap.com</span>
+              <span><i class="fa-solid fa-battery-full"></i></span>
+            </div>
+            <div class="badge badge-orange" style="align-self: center; margin-bottom: 16px;"><i class="fa-solid fa-wifi"></i> Offline Mode</div>
+            <div class="mobile-title">Signatures</div>
+            <div class="mobile-step">Step 3 of 4</div>
+            <p class="text-sm text-center text-muted mb-4">By signing, you confirm the checklist above.</p>
+            <p class="text-sm mb-2">YOUR SIGNATURE</p>
+            <div class="signature-box">
+              <span style="transform: rotate(-5deg);">Juan Dela Cruz</span>
+              <span class="signature-label">Clear | Sign</span>
+            </div>
+            <p class="text-sm mb-2 mt-4">PARTNER'S SIGNATURE</p>
+            <div class="signature-box">
+              <span style="transform: rotate(3deg);">Alex R.</span>
+              <span class="signature-label">Clear | Sign</span>
+            </div>
+            <button class="mobile-btn mt-4">[ Submit Signature ]</button>
+          </div>
+        </div>
+
+        <div class="mobile-mockup">
+          <div class="mobile-screen">
+            <div class="mobile-header">
+              <span>mobile.wap.com</span>
+              <span><i class="fa-solid fa-battery-full"></i></span>
+            </div>
+            <div class="badge badge-orange" style="align-self: center; margin-bottom: 16px;"><i class="fa-solid fa-wifi"></i> Offline Mode</div>
+            <div class="mobile-title">Handoff Recorded</div>
+            <div class="mobile-step">Step 4 of 4</div>
+            <div class="text-center mt-4" style="font-size: 3rem; color: var(--primary-green);">
+              <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <h3 class="text-center mt-4">Handoff Recorded</h3>
+            <div class="badge badge-orange" style="align-self: center; margin: 16px 0;"><i class="fa-solid fa-clock"></i> Pending Sync</div>
+            <p class="text-sm text-center text-muted mb-4">Crypto Hash: a3f9...b2e1</p>
+            <p class="text-sm text-center text-muted mb-4">Both signatures bound to trade secret. Reconnect to campus Wi-Fi or mobile data to sync your signed manifest.</p>
+            <button class="mobile-btn">[ View Signed Manifest ]</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-browse" class="screen">
+      <h2 style="font-size: 1.1rem; text-transform: uppercase; margin-bottom: 24px;">Browse Hardware</h2>
+      <div class="flex-row" style="gap: 8px; margin-bottom: 24px;">
+        <button class="btn btn-outline active">PC Components</button>
+        <button class="btn btn-outline">Storage & Memory</button>
+        <button class="btn btn-outline">Peripherals & Audio</button>
+        <button class="btn btn-outline">Embedded/IoT Kits</button>
+      </div>
+      
+      <div class="grid-cards">
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1541029071515-84cc54f84dc5?auto=format&fit=crop&w=400&q=80" alt="RAM" class="item-image">
+          <div class="item-details">
+            <div class="item-title">Corsair Vengeance 16GB DDR4</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Juan Dela Cruz</span>
+              <span class="badge badge-green">Good</span>
+            </div>
+            <div class="text-sm text-muted">Storage & Memory</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1615663245857-ac93bb5d6d20?auto=format&fit=crop&w=400&q=80" alt="Mouse" class="item-image">
+          <div class="item-details">
+            <div class="item-title">Logitech G502 Hero</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Alex R.</span>
+              <span class="badge badge-green">Like New</span>
+            </div>
+            <div class="text-sm text-muted">Peripherals & Audio</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=400&q=80" alt="GPU" class="item-image">
+          <div class="item-details">
+            <div class="item-title">GTX 1050 Ti</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Kevin Lee</span>
+              <span class="badge badge-orange">Fair</span>
+            </div>
+            <div class="text-sm text-muted">PC Components</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=400&q=80" alt="SSD" class="item-image">
+          <div class="item-details">
+            <div class="item-title">Samsung 1TB SSD</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Juan Dela Cruz</span>
+              <span class="badge badge-green">Good</span>
+            </div>
+            <div class="text-sm text-muted">Storage & Memory</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1553406830-ef2513450d7b?auto=format&fit=crop&w=400&q=80" alt="Arduino" class="item-image">
+          <div class="item-details">
+            <div class="item-title">Arduino Uno Kit</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Ana Cruz</span>
+              <span class="badge badge-green">Like New</span>
+            </div>
+            <div class="text-sm text-muted">Embedded/IoT Kits</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=400&q=80" alt="CPU" class="item-image">
+          <div class="item-details">
+            <div class="item-title">Intel i7-9700K CPU</div>
+            <div class="item-meta">
+              <span><i class="fa-solid fa-user"></i> Maria Santos</span>
+              <span class="badge badge-green">Good</span>
+            </div>
+            <div class="text-sm text-muted">PC Components</div>
+            <button class="btn btn-primary w-full mt-4">Propose Trade</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-create" class="screen">
+      <div class="modal-overlay" style="position: relative; background: transparent; backdrop-filter: none; padding: 0;">
+        <div class="modal-content" style="max-width: 700px; margin: 0 auto; animation: fadeIn 0.4s ease-out;">
+          <div class="flex-row" style="justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase;">List New Item</h2>
+            <div class="flex-row" style="gap: 8px;">
+              <span class="badge badge-green">1. Category</span>
+              <span class="badge badge-green">2. Specifications</span>
+              <span class="badge badge-orange">3. Condition</span>
+              <span class="badge badge-blue">4. Media</span>
+              <span class="badge badge-blue">5. Review</span>
+            </div>
+          </div>
+
+          <div class="flex-row" style="gap: 24px;">
+            <div class="flex-1 flex-col" style="gap: 16px;">
+              <div>
+                <p class="text-sm text-muted mb-2">Category</p>
+                <input type="text" value="Storage & Memory" readonly style="width: 100%; background: var(--bg-hover); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px; border-radius: 8px;">
+              </div>
+              <div>
+                <p class="text-sm text-muted mb-2">Name</p>
+                <input type="text" value="Corsair Vengeance 16GB DDR4" readonly style="width: 100%; background: var(--bg-hover); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px; border-radius: 8px;">
+              </div>
+              <div>
+                <p class="text-sm text-muted mb-2">Interface</p>
+                <input type="text" value="288-pin DIMM" readonly style="width: 100%; background: var(--bg-hover); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px; border-radius: 8px;">
+              </div>
+              <div>
+                <p class="text-sm text-muted mb-2">Capacity</p>
+                <input type="text" value="16GB" readonly style="width: 100%; background: var(--bg-hover); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px; border-radius: 8px;">
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <h3 style="font-size: 0.95rem; margin-bottom: 16px;">3. SELECT ITEM CONDITION</h3>
+              <p class="text-sm text-muted mb-4">Select the descriptive grade that fits your hardware. Avoid disputes by being accurate.</p>
+              
+              <div class="flex-col" style="gap: 12px;">
+                <label class="checklist-item" style="cursor: pointer;">
+                  <input type="radio" name="condition" value="like-new">
+                  <div>
+                    <div class="font-bold">Like New</div>
+                    <div class="text-sm text-muted">No visible wear, fully functional.</div>
+                  </div>
+                </label>
+                <label class="checklist-item" style="cursor: pointer; border-color: var(--primary-green);">
+                  <input type="radio" name="condition" value="good" checked>
+                  <div>
+                    <div class="font-bold text-green">Good</div>
+                    <div class="text-sm text-muted">Minor wear, fully functional.</div>
+                  </div>
+                </label>
+                <label class="checklist-item" style="cursor: pointer;">
+                  <input type="radio" name="condition" value="fair">
+                  <div>
+                    <div class="font-bold">Fair</div>
+                    <div class="text-sm text-muted">Visible wear, functional.</div>
+                  </div>
+                </label>
+                <label class="checklist-item" style="cursor: pointer;">
+                  <input type="radio" name="condition" value="poor">
+                  <div>
+                    <div class="font-bold">Poor</div>
+                    <div class="text-sm text-muted">Significant wear, functional with caveats.</div>
+                  </div>
+                </label>
+                <label class="checklist-item" style="cursor: pointer;">
+                  <input type="radio" name="condition" value="parts">
+                  <div>
+                    <div class="font-bold">For Parts</div>
+                    <div class="text-sm text-muted">Not fully functional or untested.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-row mt-4" style="justify-content: flex-end; gap: 12px;">
+            <button class="btn btn-outline">Back</button>
+            <button class="btn btn-primary">Next: Media →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-schedule" class="screen">
+      <div class="layout-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="main-content">
+          <h2 style="font-size: 1.1rem; text-transform: uppercase;">Propose Meetup Trade #T-198</h2>
+          
+          <div class="sidebar-card" style="margin-top: 16px;">
+            <h3 style="font-size: 0.95rem; margin-bottom: 16px;">Location</h3>
+            <div class="flex-col" style="gap: 8px;">
+              <label class="checklist-item" style="cursor: pointer; border-color: var(--primary-green);">
+                <input type="radio" name="location" checked>
+                <span>Library - 2nd Floor Lobby</span>
+              </label>
+              <label class="checklist-item" style="cursor: pointer;">
+                <input type="radio" name="location">
+                <span>Engineering Bldg - Rm 204 Lounge</span>
+              </label>
+              <label class="checklist-item" style="cursor: pointer;">
+                <input type="radio" name="location">
+                <span>Student Center - Food Court</span>
+              </label>
+            </div>
+
+            <h3 style="font-size: 0.95rem; margin-top: 24px; margin-bottom: 16px;">Date & Time</h3>
+            <div class="flex-row" style="gap: 12px;">
+              <input type="date" value="2026-03-14" style="flex: 1; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 8px;">
+              <input type="time" value="10:00" style="flex: 1; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 8px;">
+            </div>
+            <p class="text-sm text-muted mt-2">(8AM-5PM only)</p>
+
+            <div class="flex-row mt-4" style="justify-content: space-between; align-items: center;">
+              <span class="badge badge-green"><i class="fa-solid fa-check"></i> You: Confirmed</span>
+              <span class="badge badge-orange"><i class="fa-solid fa-clock"></i> Partner: Pending...</span>
+            </div>
+
+            <button class="btn btn-primary w-full mt-4">Confirm Meetup</button>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="sidebar-card" style="height: 100%; display: flex; flex-direction: column;">
+            <div class="flex-row" style="align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color);">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Alex" class="user-avatar">
+              <div>
+                <div class="font-bold">Trade #T-198 • Alex R.</div>
+                <div class="text-sm text-muted">Unlocked for accepted trade. Messages lock upon finalization.</div>
+              </div>
+            </div>
+            
+            <div class="flex-col" style="flex: 1; gap: 16px; overflow-y: auto; max-height: 300px; padding-right: 8px;">
+              <div class="flex-row" style="gap: 12px;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Alex" class="user-avatar" style="width: 32px; height: 32px;">
+                <div class="appeal-bubble">
+                  Hey! Are you still good to swap the RAM today?
+                </div>
+              </div>
+              <div class="flex-row" style="gap: 12px; justify-content: flex-end;">
+                <div class="appeal-bubble" style="background-color: var(--bg-hover);">
+                  Yeah, definitely! See you at the library!
+                </div>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" class="user-avatar" style="width: 32px; height: 32px;">
+              </div>
+            </div>
+
+            <div class="flex-row mt-4" style="gap: 8px;">
+              <input type="text" placeholder="Write a message..." style="flex: 1; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 10px 16px; border-radius: 9999px;">
+              <button class="btn btn-primary" style="border-radius: 50%; width: 40px; height: 40px; padding: 0;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-register" class="screen">
+      <div class="layout-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="main-content">
+          <div class="sidebar-card">
+            <h2 style="font-size: 1.1rem; text-align: center; margin-bottom: 24px;">Join ITSwap</h2>
+            <h3 style="font-size: 0.95rem; margin-bottom: 16px;">Get Verified & Registered</h3>
+            
+            <div class="flex-col" style="gap: 16px;">
+              <div>
+                <p class="text-sm text-muted mb-2">University Email</p>
+                <input type="email" placeholder="university@example.com" style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 8px;">
+              </div>
+              <div>
+                <p class="text-sm text-muted mb-2">Academic Program e.g., BSIT-2</p>
+                <input type="text" value="BSIT-3" style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 8px;">
+              </div>
+              <div>
+                <p class="text-sm text-muted mb-2">Upload Institutional ID Card</p>
+                <div style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 24px; text-align: center; background: var(--bg-dark); cursor: pointer;">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--text-muted); margin-bottom: 8px;"></i>
+                  <p class="text-sm text-muted">Drag and drop or click to upload ID (PNG, JPG up to 10MB)</p>
+                </div>
+                <div class="flex-row mt-2" style="align-items: center; gap: 8px;">
+                  <i class="fa-solid fa-file-image" style="color: var(--primary-green);"></i>
+                  <span class="text-sm">ID_Card_DelaCruz.jpg</span>
+                  <i class="fa-solid fa-check-circle text-green" style="margin-left: auto;"></i>
+                </div>
+              </div>
+              <label class="flex-row" style="align-items: flex-start; gap: 8px; font-size: 0.8rem; cursor: pointer;">
+                <input type="checkbox" checked style="accent-color: var(--primary-green); margin-top: 2px;">
+                <span>I agree to the simplified terms and consent to ID verification.</span>
+              </label>
+              <button class="btn btn-primary w-full">Submit for Verification</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="sidebar-card">
+            <h2 style="font-size: 1.1rem; text-align: center; margin-bottom: 24px;">Public Profile View</h2>
+            <div class="flex-col" style="align-items: center; gap: 12px; margin-bottom: 24px;">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+              <div class="text-center">
+                <div class="font-bold" style="font-size: 1.1rem;">Juan Dela Cruz</div>
+                <div class="badge badge-green mt-2"><i class="fa-solid fa-check-circle"></i> Verified IT Student</div>
+                <div class="badge badge-blue mt-2">BSIT-3</div>
+              </div>
+            </div>
+            <div class="stats-list">
+              <div class="stat-item"><span class="stat-label">Completed Trades</span><span class="stat-value">7</span></div>
+              <div class="stat-item"><span class="stat-label">Cancellations</span><span class="stat-value">1</span></div>
+              <div class="stat-item"><span class="stat-label">No-Shows</span><span class="stat-value">0</span></div>
+              <div class="stat-item"><span class="stat-label">Moderation Actions</span><span class="stat-value">0</span></div>
+              <div class="stat-item"><span class="stat-label">Member Since</span><span class="stat-value">Aug 2024</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-dispute" class="screen">
+      <div class="modal-overlay" style="position: relative; background: transparent; backdrop-filter: none; padding: 0;">
+        <div class="modal-content" style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.4s ease-out;">
+          <h2 style="font-size: 1.1rem; margin-bottom: 24px;">Dispute #D-014 · Trade #T-209 <span class="text-muted" style="font-size: 0.8rem; font-weight: 400;">Reported by Alex R. · 2h ago</span></h2>
+          
+          <div class="flex-row" style="gap: 24px;">
+            <div class="flex-2">
+              <h3 style="font-size: 0.95rem; margin-bottom: 12px;">Evidence & Media</h3>
+              <div class="grid-cards" style="grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="item-card">
+                  <img src="https://images.unsplash.com/photo-1541029071515-84cc54f84dc5?auto=format&fit=crop&w=400&q=80" alt="RAM" class="item-image" style="height: 120px;">
+                  <div class="item-details" style="padding: 8px;">
+                    <div class="text-sm">Declared: Like New</div>
+                  </div>
+                </div>
+                <div class="item-card">
+                  <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=400&q=80" alt="SSD" class="item-image" style="height: 120px;">
+                  <div class="item-details" style="padding: 8px;">
+                    <div class="text-sm text-orange">Reported: Fair</div>
+                  </div>
+                </div>
+              </div>
+              <div class="item-card mt-4" style="flex-direction: row; align-items: center; gap: 12px; padding: 12px;">
+                <i class="fa-solid fa-play-circle" style="font-size: 2rem; color: var(--primary-green);"></i>
+                <div>
+                  <div class="font-bold text-sm">Functional Video.mp4</div>
+                  <div class="text-sm text-muted">Uploaded by Alex R.</div>
+                </div>
+              </div>
+
+              <h3 style="font-size: 0.95rem; margin-top: 24px; margin-bottom: 12px;">Trade-Scoped Transcript</h3>
+              <div class="flex-col" style="gap: 8px; font-size: 0.8rem;">
+                <div><span class="font-bold">Alex R:</span> Wait, there are visible scuffs here.</div>
+                <div><span class="font-bold">Juan D:</span> That's minor, it's fully functional!</div>
+                <div><span class="font-bold">Alex R:</span> Isn't this too late? I'm packing...</div>
+                <div><span class="font-bold">Juan D:</span> That's minor, it's fully functional!</div>
+              </div>
+
+              <h3 style="font-size: 0.95rem; margin-top: 24px; margin-bottom: 12px;">Signed Manifest</h3>
+              <div class="flex-row" style="gap: 12px;">
+                <div class="signature-box" style="flex: 1;">
+                  <span style="transform: rotate(-5deg); font-size: 1.5rem;">Alex R.</span>
+                  <span class="signature-label">Alex R. (Signature)</span>
+                </div>
+                <div class="signature-box" style="flex: 1;">
+                  <span style="transform: rotate(3deg); font-size: 1.5rem;">Juan Dela Cruz</span>
+                  <span class="signature-label">Juan Dela Cruz (Signature)</span>
+                </div>
+              </div>
+              <p class="text-sm text-muted mt-2">Hash: a3f9e...2b4d</p>
+            </div>
+
+            <div class="flex-1">
+              <div class="sidebar-card" style="height: 100%;">
+                <h3 style="font-size: 0.95rem; margin-bottom: 16px;">Arbitration Actions</h3>
+                <div class="flex-col" style="gap: 8px;">
+                  <button class="btn btn-outline w-full">Dismiss Dispute</button>
+                  <button class="btn btn-outline w-full text-orange">Cancel Trade</button>
+                  <button class="btn btn-outline w-full text-red">Void Trade</button>
+                  <button class="btn btn-warning w-full">Issue Warning</button>
+                  <button class="btn btn-danger w-full">Suspend Account</button>
+                </div>
+
+                <h3 style="font-size: 0.95rem; margin-top: 24px; margin-bottom: 12px;">Resolution Notes</h3>
+                <textarea placeholder="Type admin verdict and official resolution justification here..." style="width: 100%; height: 120px; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; border-radius: 8px; padding: 8px; resize: none;"></textarea>
+                <button class="btn btn-primary w-full mt-4">Submit Resolution</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-history" class="screen">
+      <div class="layout-grid" style="grid-template-columns: 1fr;">
+        <div class="main-content">
+          <h2 style="font-size: 1.1rem; text-transform: uppercase;">My Trades > History & Archive</h2>
+          
+          <h3 style="font-size: 0.95rem; margin-top: 16px;">TERMINAL PIPELINE STATES</h3>
+          
+          <div class="timeline mt-4">
+            <div class="timeline-item" style="border-color: var(--accent-red);">
+              <div class="flex-row" style="justify-content: space-between;">
+                <span class="font-bold text-red">Trade #T-142 · Corsair Vengeance RAM</span>
+                <span class="badge badge-red">X CANCELLED</span>
+              </div>
+              <div class="text-sm text-muted mt-2">Cancelled by Lister</div>
+              <div class="text-sm text-muted">Auto-Expired: No-Show</div>
+              <div class="text-sm text-orange mt-2"><i class="fa-solid fa-triangle-exclamation"></i> This cancellation has been recorded on your trust profile.</div>
+              <div class="text-sm text-muted mt-2">Reason: "Lister decided not to proceed after scheduled meetup delay. Auto-return pipeline triggered."</div>
+              <div class="text-sm mt-2">Attempted Swap: Corsair Vengeance 16GB for SSD.</div>
+              <div class="flex-row mt-4" style="gap: 8px;">
+                <button class="btn btn-outline btn-sm">Re-activate Listing</button>
+                <button class="btn btn-outline btn-sm">View Original Details</button>
+              </div>
+            </div>
+
+            <div class="timeline-item" style="border-color: var(--primary-green);">
+              <div class="flex-row" style="justify-content: space-between;">
+                <span class="font-bold text-green">Trade #T-198 · Samsung SSD</span>
+                <span class="badge badge-green">COMPLETED</span>
+              </div>
+              <div class="text-sm text-muted mt-2">Messaging permanently locked.</div>
+              <div class="text-sm text-muted">Hash: a3f9e...2b4d</div>
+              
+              <div class="mt-4 p-4" style="background: var(--bg-dark); border-radius: 8px; border: 1px solid var(--border-color);">
+                <h4 class="text-sm font-bold mb-2">COMPLETED CHECKLIST CONTAINER</h4>
+                <div class="flex-col text-sm" style="gap: 4px;">
+                  <span><i class="fa-solid fa-check text-green"></i> Item matches listing photos</span>
+                  <span><i class="fa-solid fa-check text-green"></i> Condition matches declared grade</span>
+                  <span><i class="fa-solid fa-check text-green"></i> All accessories present</span>
+                </div>
+                <div class="flex-row mt-4" style="gap: 12px;">
+                  <div class="signature-box" style="flex: 1; height: 60px;">
+                    <span style="font-size: 1.2rem;">Alex R.</span>
+                  </div>
+                  <div class="signature-box" style="flex: 1; height: 60px;">
+                    <span style="font-size: 1.2rem;">Juan Dela Cruz</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex-row mt-4" style="gap: 8px;">
+                <button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i> Export / Print Agreement (PDF)</button>
+                <button class="btn btn-outline btn-sm">View Metadata</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-evaluation" class="screen">
+      <div class="modal-overlay" style="position: relative; background: transparent; backdrop-filter: none; padding: 0;">
+        <div class="modal-content" style="max-width: 700px; margin: 0 auto; animation: fadeIn 0.4s ease-out;">
+          <div class="flex-row" style="align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div style="width: 48px; height: 48px; background: var(--primary-green); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--bg-dark);">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <div>
+              <h2 style="font-size: 1.2rem;">Trade Evaluation</h2>
+              <p class="text-sm text-muted">Help us evaluate the system based on ISO/IEC 25010 standards.</p>
+            </div>
+          </div>
+
+          <div class="evaluation-row">
+            <div class="evaluation-label">
+              <div class="font-bold">Functional Suitability</div>
+              <div class="text-sm text-muted">The system allowed me to complete the barter as intended.</div>
+            </div>
+            <div class="evaluation-scale">
+              <input type="radio" name="q1" id="q1-1"><label for="q1-1">1</label>
+              <input type="radio" name="q1" id="q1-2"><label for="q1-2">2</label>
+              <input type="radio" name="q1" id="q1-3"><label for="q1-3">3</label>
+              <input type="radio" name="q1" id="q1-4"><label for="q1-4">4</label>
+              <input type="radio" name="q1" id="q1-5" checked><label for="q1-5">5</label>
+            </div>
+          </div>
+
+          <div class="evaluation-row">
+            <div class="evaluation-label">
+              <div class="font-bold">Usability</div>
+              <div class="text-sm text-muted">The interface was easy to navigate.</div>
+            </div>
+            <div class="evaluation-scale">
+              <input type="radio" name="q2" id="q2-1"><label for="q2-1">1</label>
+              <input type="radio" name="q2" id="q2-2"><label for="q2-2">2</label>
+              <input type="radio" name="q2" id="q2-3"><label for="q2-3">3</label>
+              <input type="radio" name="q2" id="q2-4" checked><label for="q2-4">4</label>
+              <input type="radio" name="q2" id="q2-5"><label for="q2-5">5</label>
+            </div>
+          </div>
+
+          <div class="evaluation-row">
+            <div class="evaluation-label">
+              <div class="font-bold">Reliability</div>
+              <div class="text-sm text-muted">The offline handoff worked without errors.</div>
+            </div>
+            <div class="evaluation-scale">
+              <input type="radio" name="q3" id="q3-1"><label for="q3-1">1</label>
+              <input type="radio" name="q3" id="q3-2"><label for="q3-2">2</label>
+              <input type="radio" name="q3" id="q3-3"><label for="q3-3">3</label>
+              <input type="radio" name="q3" id="q3-4"><label for="q3-4">4</label>
+              <input type="radio" name="q3" id="q3-5" checked><label for="q3-5">5</label>
+            </div>
+          </div>
+
+          <div class="evaluation-row">
+            <div class="evaluation-label">
+              <div class="font-bold">Performance Efficiency</div>
+              <div class="text-sm text-muted">The pages loaded quickly and responsively.</div>
+            </div>
+            <div class="evaluation-scale">
+              <input type="radio" name="q4" id="q4-1"><label for="q4-1">1</label>
+              <input type="radio" name="q4" id="q4-2"><label for="q4-2">2</label>
+              <input type="radio" name="q4" id="q4-3"><label for="q4-3">3</label>
+              <input type="radio" name="q4" id="q4-4" checked><label for="q4-4">4</label>
+              <input type="radio" name="q4" id="q4-5"><label for="q4-5">5</label>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <p class="font-bold mb-2">Optional Comments</p>
+            <textarea placeholder="Share your thoughts on how we can improve the handoff or swap flow..." style="width: 100%; height: 100px; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; border-radius: 8px; padding: 8px; resize: none;"></textarea>
+          </div>
+
+          <div class="flex-row mt-4" style="justify-content: flex-end; gap: 12px;">
+            <button class="btn btn-outline">Cancel</button>
+            <button class="btn btn-primary">Submit Evaluation</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-appeal" class="screen">
+      <div class="layout-grid" style="grid-template-columns: 1fr;">
+        <div class="main-content">
+          <h2 style="font-size: 1.1rem; text-transform: uppercase;">Appeal Thread</h2>
+          
+          <div class="appeal-thread mt-4">
+            <div class="appeal-message">
+              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" alt="Admin Maria" class="appeal-avatar">
+              <div class="appeal-bubble">
+                <div class="appeal-meta">
+                  <span class="font-bold">Admin Maria</span>
+                  <span>Aug 10, 2026</span>
+                </div>
+                <p>Warning Issued by Admin Maria · Aug 10, 2026</p>
+                <p class="text-sm mt-2">Reason: Unresponsive to scheduled meetup (Trade #T-198).</p>
+                <p class="text-sm">Impact: 1 No-Show recorded on profile.</p>
+              </div>
+            </div>
+
+            <div class="appeal-message" style="justify-content: flex-end;">
+              <div class="appeal-bubble" style="background-color: var(--bg-hover);">
+                <div class="appeal-meta">
+                  <span class="font-bold">Juan Dela Cruz</span>
+                  <span>Aug 11, 2026</span>
+                </div>
+                <p>I am appealing this warning. I was hospitalized during the scheduled meetup. I have attached my medical certificate as evidence. I have also messaged Alex R. to reschedule.</p>
+                <div class="flex-row mt-2" style="align-items: center; gap: 8px; background: var(--bg-dark); padding: 8px; border-radius: 8px;">
+                  <i class="fa-solid fa-file-pdf text-red"></i>
+                  <span class="text-sm">Medical_Certificate.pdf</span>
+                </div>
+              </div>
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Juan" class="appeal-avatar">
+            </div>
+
+            <div class="appeal-message">
+              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" alt="Admin Maria" class="appeal-avatar">
+              <div class="appeal-bubble">
+                <div class="appeal-meta">
+                  <span class="font-bold">Admin Maria</span>
+                  <span>Aug 11, 2026</span>
+                </div>
+                <p>Thank you for the evidence, Juan. I am reviewing the medical certificate. I will also check the trade-scoped messages to verify you contacted Alex R.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card mt-4">
+            <h3 style="font-size: 0.95rem; margin-bottom: 16px;">Detail Panel</h3>
+            <div class="flex-row" style="gap: 24px;">
+              <div class="flex-1">
+                <h4 class="text-sm text-muted mb-2">ORIGINAL EVIDENCE</h4>
+                <div class="flex-col" style="gap: 8px;">
+                  <div class="flex-row" style="align-items: center; gap: 8px; background: var(--bg-dark); padding: 8px; border-radius: 8px;">
+                    <i class="fa-solid fa-comments text-green"></i>
+                    <span class="text-sm">Trade-scoped Chat Log</span>
+                  </div>
+                  <div class="flex-row" style="align-items: center; gap: 8px; background: var(--bg-dark); padding: 8px; border-radius: 8px;">
+                    <i class="fa-solid fa-calendar text-orange"></i>
+                    <span class="text-sm">Meetup Schedule</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1">
+                <h4 class="text-sm text-muted mb-2">APPEAL DECISION</h4>
+                <div class="flex-col" style="gap: 8px;">
+                  <label class="flex-row" style="align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="appeal-decision" value="uphold">
+                    <span class="text-sm">Uphold Warning</span>
+                  </label>
+                  <label class="flex-row" style="align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="appeal-decision" value="revoke" checked>
+                    <span class="text-sm">Revoke Warning</span>
+                  </label>
+                  <label class="flex-row" style="align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="appeal-decision" value="reduce">
+                    <span class="text-sm">Reduce Suspension</span>
+                  </label>
+                  <label class="flex-row" style="align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="appeal-decision" value="escalate">
+                    <span class="text-sm">Escalate to Admin Lead</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <p class="text-sm text-muted mb-2">Resolution Notes</p>
+              <textarea placeholder="Provide official justification for the decision..." style="width: 100%; height: 80px; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; border-radius: 8px; padding: 8px; resize: none;"></textarea>
+            </div>
+            <p class="text-sm text-muted mt-2">Decision will be permanently recorded in the audit log.</p>
+            <button class="btn btn-primary w-full mt-4">Submit Decision</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-target');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
